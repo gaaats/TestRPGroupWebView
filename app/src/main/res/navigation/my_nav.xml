@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav"
+    app:startDestination="@id/webViewFragment">
+
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.example.testrpgroupwebview.fragments.WebViewFragment"
+        android:label="Web view"
+        tools:layout="@layout/fragment_web_view" >
+        <action
+            android:id="@+id/action_webViewFragment_to_noInternetFragment"
+            app:destination="@id/noInternetFragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_webViewFragment_to_startFragmentFragment"
+            app:destination="@id/startFragmentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/startFragmentFragment"
+        android:name="com.example.testrpgroupwebview.fragments.StartFragmentFragment"
+        android:label="Privacy Policy"
+        tools:layout="@layout/fragment_start_fragment" >
+        <action
+            android:id="@+id/action_startFragmentFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_startFragmentFragment_to_noInternetFragment"
+            app:destination="@id/noInternetFragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/noInternetFragment"
+        android:name="com.example.testrpgroupwebview.fragments.NoInternetFragment"
+        android:label="Oooops, there is no Internet"
+        tools:layout="@layout/fragment_no_internet" >
+        <action
+            android:id="@+id/action_noInternetFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_noInternetFragment_to_startFragmentFragment"
+            app:destination="@id/startFragmentFragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false" />
+    </fragment>
+</navigation>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "749806062010",
+    "project_id": "testrpgroupwebview",
+    "storage_bucket": "testrpgroupwebview.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:749806062010:android:2132f03cace04e23c63583",
+        "android_client_info": {
+          "package_name": "com.example.testrpgroupwebview"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "749806062010-hsrfgag9i8r65t28tgcbd71qvjcruk3s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPGCBB4ptW8YHCsWzTDQ0CaWiPh3UID3s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "749806062010-hsrfgag9i8r65t28tgcbd71qvjcruk3s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
