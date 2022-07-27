@@ -68,10 +68,13 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.0-rc01")
 
     //facebook
-//    implementation 'com.facebook.android:facebook-android-sdk:5.4.0'
+    implementation 'com.facebook.android:facebook-android-sdk:14.1.0'
 
     //OneSignal
     implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
+
+    // appsflyer
+    implementation 'com.appsflyer:af-android-sdk:6.8.0'
 
 
 }
