@@ -14,22 +14,22 @@ class ConnectionLiveData (
     private val connectivityManager: ConnectivityManager) :
     LiveData<Boolean>(){
 
+    var firstLoad = true
+
     constructor(application: Application) : this(
         application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     )
 
-    init {
-
-    }
-
     private val networkCallback =  object : ConnectivityManager.NetworkCallback(){
 
         override fun onAvailable(network: Network) {
+            firstLoad = false
             super.onAvailable(network)
             postValue(true)
         }
 
         override fun onLost(network: Network) {
+            firstLoad = false
             super.onLost(network)
             postValue(false)
         }

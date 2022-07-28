@@ -13,8 +13,8 @@
         <action
             android:id="@+id/action_webViewFragment_to_noInternetFragment"
             app:destination="@id/noInternetFragment"
-            app:launchSingleTop="false"
-            app:popUpToInclusive="false" />
+            app:popUpTo="@id/webViewFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_webViewFragment_to_startFragmentFragment"
             app:destination="@id/startFragmentFragment" />
@@ -27,12 +27,12 @@
         <action
             android:id="@+id/action_startFragmentFragment_to_webViewFragment"
             app:destination="@id/webViewFragment"
+            app:popUpTo="@id/startFragmentFragment"
             app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_startFragmentFragment_to_noInternetFragment"
             app:destination="@id/noInternetFragment"
-            app:launchSingleTop="false"
-            app:popUpToInclusive="false" />
+            app:popUpTo="@id/startFragmentFragment" />
     </fragment>
     <fragment
         android:id="@+id/noInternetFragment"
@@ -42,12 +42,11 @@
         <action
             android:id="@+id/action_noInternetFragment_to_webViewFragment"
             app:destination="@id/webViewFragment"
-            app:launchSingleTop="false"
-            app:popUpToInclusive="false" />
+            app:popUpTo="@id/noInternetFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_noInternetFragment_to_startFragmentFragment"
             app:destination="@id/startFragmentFragment"
-            app:launchSingleTop="false"
             app:popUpToInclusive="false" />
     </fragment>
 </navigation>

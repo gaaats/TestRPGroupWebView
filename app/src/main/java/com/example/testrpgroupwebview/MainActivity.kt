@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.fragment.NavHostFragment
@@ -24,12 +25,9 @@ class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding ?: throw RuntimeException("ActivityMainBinding = null")
+
     private val sheredPref by lazy {
         getSharedPreferences(APP_PREF, Context.MODE_PRIVATE)
-    }
-
-    private val connectionLiveData by lazy {
-        ConnectionLiveData(application)
     }
 
     private val navController by lazy {
@@ -50,42 +48,22 @@ class MainActivity : AppCompatActivity() {
         navController.navInflater.inflate(R.navigation.my_nav)
     }
 
-    private var isInternetAvailable = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen().apply {
             this.setKeepOnScreenCondition {
-//                oneTimeCheckInternet()
-//                initCheckingInternetStatus()
                 mainVievModel.isSplashScreenActive.value
             }
         }
-
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Enable verbose OneSignal logg    ing to debug issues if needed.
-        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
-
-        // OneSignal Initialization
-        OneSignal.initWithContext(this);
-        OneSignal.setAppId(ONESIGNAL_APP_ID);
-
-        if (isUserAcceptPolicy) {
-            Log.d("MY_TAG", "user accept policy")
-        } else {
-            Log.d("MY_TAG", "user deny policy")
-        }
+        oneSignalInit()
 
         chechIsFirstStartAndIsUserAcceptPolicy()
         addStartDestinationOfNavHostFrag()
         observeFinishActivity()
-        setupActionBarWithNavController(navController)
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
+        actionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     override fun onDestroy() {
@@ -98,6 +76,17 @@ class MainActivity : AppCompatActivity() {
         saveUserAcceptPolicyValue()
         super.onStop()
     }
+
+    private fun oneSignalInit() {
+        // Enable verbose OneSignal logg    ing to debug issues if needed.
+        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
+
+        // OneSignal Initialization
+        OneSignal.initWithContext(this);
+        OneSignal.setAppId(ONESIGNAL_APP_ID);
+    }
+
+
 
     private fun observeFinishActivity() {
         mainVievModel.finishApp.observe(this) {
@@ -113,23 +102,19 @@ class MainActivity : AppCompatActivity() {
     private fun chechIsFirstStartAndIsUserAcceptPolicy() {
         if (isFirstStart || !isUserAcceptPolicy) {
             startDestination = R.id.startFragmentFragment
-            Log.d("MY_TAG", "first start")
             sheredPref.edit()
                 .putBoolean(KEY_TO_PREF_FIRST_START, false)
                 .apply()
 
         } else {
-            Log.d("MY_TAG", "second start")
             startDestination = R.id.webViewFragment
 
         }
-        Log.d("MY_TAG", "startDestination is $startDestination")
     }
 
     private fun saveUserAcceptPolicyValue() {
         mainVievModel.isUserAcceptPolicy.value?.let {
             if (!isUserAcceptPolicy) {
-                Log.d("MY_TAG", "activity saved it ${mainVievModel.isUserAcceptPolicy.value}")
                 sheredPref.edit()
                     .putBoolean(KEY_TO_PREF_USER_ACCEPT_POLICY, it)
                     .apply()
@@ -141,6 +126,5 @@ class MainActivity : AppCompatActivity() {
         private const val APP_PREF = "APP_PREF"
         private const val KEY_TO_PREF_FIRST_START = "222"
         private const val KEY_TO_PREF_USER_ACCEPT_POLICY = "333"
-        private const val KEY_FOR_ = "333"
     }
 }

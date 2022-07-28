@@ -33,9 +33,8 @@ class StartFragmentFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        requireActivity().setTitle(R.string.private_policy_fragment_label)
         initBtnSetOnClickListener()
-//        initObserveForUserAcceptPolicy()
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -55,15 +54,14 @@ class StartFragmentFragment : Fragment() {
     private fun oneTimeCheckingForUserAcceptPolicyOrNot() {
         val isUserAcceptPolicy = mainVievModel.isUserAcceptPolicy.value ?: false
         if (isUserAcceptPolicy) {
-            binding.scrollViev.visibility = View.GONE
-            binding.tvTitle.visibility = View.GONE
-            binding.textAlreadyAcceptPolicy.visibility = View.VISIBLE
+            binding.apply {
+                scrollViev.visibility = View.GONE
+                tvTitle.visibility = View.GONE
+                textAlreadyAcceptPolicy.visibility = View.VISIBLE
+            }
             return
         }
-//        binding.scrollViev.visibility = View.VISIBLE
-//        binding.textAlreadyAcceptPolicy.visibility = View.GONE
     }
-
 
     override fun onDestroy() {
         _binding = null

@@ -1,11 +1,10 @@
 package com.example.testrpgroupwebview.fragments
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.testrpgroupwebview.R
 import com.example.testrpgroupwebview.databinding.FragmentNoInternetBinding
@@ -29,6 +28,7 @@ class NoInternetFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initCheckingInternetStatus()
+        requireActivity().setTitle(R.string.no_internet_fragment_label)
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -41,12 +41,7 @@ class NoInternetFragment : Fragment() {
         connectionLiveData = ConnectionLiveData(requireActivity().application)
         connectionLiveData.observe(viewLifecycleOwner) { isNetConnected ->
             if (isNetConnected) {
-                Log.d("MY_TAG", "Net Connected ")
                 findNavController().navigate(R.id.action_noInternetFragment_to_webViewFragment)
-
-            } else {
-                Log.d("MY_TAG", "Net Noooooooo")
-
             }
         }
     }

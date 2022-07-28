@@ -10,7 +10,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.testrpgroupwebview.utils.ConnectionLiveData
 import com.example.testrpgroupwebview.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -42,6 +41,10 @@ class MainVievModel @Inject constructor(private val application: Application) : 
     val currentPageOpened: LiveData<String?>
         get() = _currentPageOpened
 
+    private var _initFirstLoad = MutableLiveData(true)
+    val initFirstLoad: LiveData<Boolean>
+        get() = _initFirstLoad
+
     init {
         viewModelScope.launch {
             delay(2000)
@@ -64,28 +67,33 @@ class MainVievModel @Inject constructor(private val application: Application) : 
 
     fun makeLoadVebViev(view: WebView) {
         _stateVebViev.value = Resource.Loading()
-        view.webViewClient = WebViewClient()
+        view.webViewClient = object :WebViewClient(){
+            override fun onReceivedError(
+                view: WebView?,
+                errorCode: Int,
+                description: String?,
+                failingUrl: String?
+            ) {
+                _stateVebViev.value = Resource.Error("no internet")
+                super.onReceivedError(view, errorCode, description, failingUrl)
+            }
+        }
         try {
-//            if (!oneTimeCheckInternet()){
-//                _stateVebViev.value = Resource.Error("no internet")
-//                return
-//            }
             viewModelScope.launch {
                 view.loadUrl(currentPageOpened.value ?: "https://geekshopukraine.com.ua/ua/")
                 delay(3000)
                 _stateVebViev.value = Resource.Success("good load")
             }
         } catch (e: Exception) {
-            _stateVebViev.value = Resource.Error(e.message.toString())
+            Log.d("MY_TAG","Error is ${e.message}")
         }
-
+        _initFirstLoad.value = false
     }
 
     fun oneTimeCheckInternet(): Boolean {
         val connectivityManager =
             application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
-
         return if (networkInfo != null && networkInfo.isConnected) {
             Log.d("MY_TAG", "Net +++ in oneTimeCheckInternet")
             true
@@ -94,5 +102,4 @@ class MainVievModel @Inject constructor(private val application: Application) : 
             false
         }
     }
-
 }
