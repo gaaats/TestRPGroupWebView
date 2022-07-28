@@ -110,9 +110,10 @@ class WebViewFragment : Fragment() {
         }
     }
 
-    override fun onStop() {
+    override fun onPause() {
         val page = binding.webViewInfo.url
         mainVievModel.saveCurrentPageLoaded(page)
+        Log.d("MY_TAG", "save value in fragment is ${page}")
         super.onStop()
     }
 }

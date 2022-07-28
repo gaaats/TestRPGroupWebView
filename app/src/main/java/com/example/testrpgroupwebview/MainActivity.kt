@@ -42,6 +42,11 @@ class MainActivity : AppCompatActivity() {
     private val isFirstStart by lazy {
         sheredPref.getBoolean(KEY_TO_PREF_FIRST_START, true)
     }
+
+    private val userLastPAgeLoaded by lazy {
+        sheredPref.getString(KEY_TO_PREF_USER_LAST_PAGE_OPENED, null)
+    }
+
     private var startDestination = R.id.webViewFragment
 
     private val navGraph by lazy {
@@ -60,10 +65,16 @@ class MainActivity : AppCompatActivity() {
 
         oneSignalInit()
 
+        takeUserLastPageOpened()
         chechIsFirstStartAndIsUserAcceptPolicy()
         addStartDestinationOfNavHostFrag()
         observeFinishActivity()
         actionBar?.setDisplayHomeAsUpEnabled(false)
+    }
+
+    private fun takeUserLastPageOpened() {
+        Log.d("MY_TAG", "save value is ${userLastPAgeLoaded}")
+        mainVievModel.saveCurrentPageLoaded(userLastPAgeLoaded)
     }
 
     override fun onDestroy() {
@@ -74,7 +85,17 @@ class MainActivity : AppCompatActivity() {
     override fun onStop() {
         Log.d("MY_TAG", "onStop")
         saveUserAcceptPolicyValue()
+        saveUserPathWebView()
         super.onStop()
+    }
+
+    private fun saveUserPathWebView() {
+        mainVievModel.currentPageOpened.value.also {
+            Log.d("MY_TAG", "save value is ${it}")
+            sheredPref.edit()
+                .putString(KEY_TO_PREF_USER_LAST_PAGE_OPENED, it)
+                .apply()
+        }
     }
 
     private fun oneSignalInit() {
@@ -126,5 +147,6 @@ class MainActivity : AppCompatActivity() {
         private const val APP_PREF = "APP_PREF"
         private const val KEY_TO_PREF_FIRST_START = "222"
         private const val KEY_TO_PREF_USER_ACCEPT_POLICY = "333"
+        private const val KEY_TO_PREF_USER_LAST_PAGE_OPENED = "444"
     }
 }

@@ -80,7 +80,7 @@ class MainVievModel @Inject constructor(private val application: Application) : 
         }
         try {
             viewModelScope.launch {
-                view.loadUrl(currentPageOpened.value ?: "https://geekshopukraine.com.ua/ua/")
+                view.loadUrl(currentPageOpened.value ?: FIRST_LOAD_PATH)
                 delay(3000)
                 _stateVebViev.value = Resource.Success("good load")
             }
@@ -101,5 +101,9 @@ class MainVievModel @Inject constructor(private val application: Application) : 
             Log.d("MY_TAG", "Net --- in oneTimeCheckInternet")
             false
         }
+    }
+
+    companion object{
+        private const val FIRST_LOAD_PATH = "https://geekshopukraine.com.ua/ua/"
     }
 }
